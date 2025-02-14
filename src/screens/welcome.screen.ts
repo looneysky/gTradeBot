@@ -139,7 +139,6 @@ export const welcomeGuideHandler = async (
     `<b>💳 My Wallet:</b>\n${copytoclipboard(user.wallet_address)}\n\n` +
     `<b>💳 Balance:</b> ${solbalance} SOL\n\n` +
     `<a href="https://solscan.io/address/${user.wallet_address}">View on Explorer</a>\n\n` +
-    `<b>Part of <a href="https://growsol.io">GrowSol</a>'s Ecosystem</b>\n\n` +
     // `-----------------------\n` +
     // `<a href="https://docs.growsol.io/docs">📖 Docs</a>\n` +
     // `<a href="https://growsol.io">🌍 Website</a>\n\n` +
@@ -172,7 +171,7 @@ export const welcomeGuideHandler = async (
         if (item.command.includes("bridge")) {
           return {
             text: item.text,
-            url: "https://t.me/growbridge_bot",
+            url: "https://t.me/gmgnai_alertbot",
           };
         }
         if (item.text.includes("Burn")) {
