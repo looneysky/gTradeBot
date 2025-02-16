@@ -76,7 +76,7 @@ const sendAlert = async (
 
     const botId = isTradeBot ? TradeBotID : BridgeBotID;
     const botImg = isTradeBot ? ALERT_GT_IMAGE : ALERT_GB_IMAGE;
-    const txt = isTradeBot ? "Try GrowTrade Now" : "Try GrowBridge Now";
+    const txt = isTradeBot ? "Try GmgnTrade Now" : "Try GmgnBridge Now";
     const referralLink = `https://t.me/${botId}?start=${referral_code}`;
 
     const inline_keyboard = [

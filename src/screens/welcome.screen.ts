@@ -95,12 +95,11 @@ const newUserHandler = async (bot: TelegramBot, msg: TelegramBot.Message) => {
 
   // send private key & wallet address
   const caption =
-    `👋 Welcome to GrowTradeBot!\n\n` +
+    `👋 Welcome to GmgnTradeBot!\n\n` +
     `A new wallet has been generated for you. This is your wallet address\n\n` +
     `${wallet_address}\n\n` +
     `<b>Save this private key below</b>❗\n\n` +
-    `<tg-spoiler>${private_key}</tg-spoiler>\n\n` +
-    `<b>To get started, please read our <a href="https://docs.growsol.io">docs</a></b>`;
+    `<tg-spoiler>${private_key}</tg-spoiler>\n\n`;
 
   await bot.sendMessage(chat_id, caption, {
     parse_mode: "HTML",
@@ -132,8 +131,8 @@ export const welcomeGuideHandler = async (
   if (!user) return;
   const solbalance = await TokenService.getSOLBalance(user.wallet_address);
   const caption =
-    `<b>Welcome to GrowTrade | Beta Version</b>\n\n` +
-    `The Unique Solana Trading Bot. Snipe, trade and keep track of your positions with GrowTrade.\n\n` +
+    `<b>Welcome to GmgnTrade | Beta Version</b>\n\n` +
+    `The Unique Solana Trading Bot. Snipe, trade and keep track of your positions with GmgnTrade.\n\n` +
     `⬩ A never seen unique Burn Mechanism 🔥\n` +
     `⬩ Revenue Share through Buybacks on GrowSol ($GRW)\n\n` +
     `<b>💳 My Wallet:</b>\n${copytoclipboard(user.wallet_address)}\n\n` +
