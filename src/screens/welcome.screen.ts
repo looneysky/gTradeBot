@@ -134,7 +134,6 @@ export const welcomeGuideHandler = async (
     `<b>Welcome to GmgnTrade | Beta Version</b>\n\n` +
     `The Unique Solana Trading Bot. Snipe, trade and keep track of your positions with GmgnTrade.\n\n` +
     `⬩ A never seen unique Burn Mechanism 🔥\n` +
-    `⬩ Revenue Share through Buybacks on GrowSol ($GRW)\n\n` +
     `<b>💳 My Wallet:</b>\n${copytoclipboard(user.wallet_address)}\n\n` +
     `<b>💳 Balance:</b> ${solbalance} SOL\n\n` +
     `<a href="https://solscan.io/address/${user.wallet_address}">View on Explorer</a>\n\n` +
