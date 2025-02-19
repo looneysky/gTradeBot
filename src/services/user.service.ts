@@ -29,6 +29,13 @@ export const UserService = {
       throw new Error(err.message);
     }
   },
+  findAll: async () => {
+    try {
+      return await UserSchema.find();
+    } catch (err: any) {
+      throw new Error(err.message);
+    }
+  },
   findLastOne: async (props: any) => {
     try {
       const filter = props;
