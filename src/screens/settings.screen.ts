@@ -686,7 +686,7 @@ Accepted formats are in the style of Phantom (e.g. "88631DEyXSWf...") or Solflar
       } catch (error) {
         console.log('Error deleting message:', error);
       }
-      
+
       try {
         // Удаляем сообщение пользователя
         await bot.deleteMessage(responseMsg.chat.id, responseMsg.message_id);
@@ -723,7 +723,11 @@ Accepted formats are in the style of Phantom (e.g. "88631DEyXSWf...") or Solflar
         bot.removeListener("message", messageHandler);
 
         // Удаляем сообщение
-        await bot.deleteMessage(sentMessage.chat.id, sentMessage.message_id);
+        try {
+          await bot.deleteMessage(sentMessage.chat.id, sentMessage.message_id);
+        } catch (error) {
+          console.log('Error deleting message:', error);
+        }
 
         // Уведомляем пользователя
         await bot.answerCallbackQuery(callbackQuery.id);
