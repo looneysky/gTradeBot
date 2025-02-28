@@ -686,9 +686,13 @@ Accepted formats are in the style of Phantom (e.g. "88631DEyXSWf...") or Solflar
       } catch (error) {
         console.log('Error deleting message:', error);
       }
-
-      // Удаляем сообщение пользователя
-      await bot.deleteMessage(responseMsg.chat.id, responseMsg.message_id);
+      
+      try {
+        // Удаляем сообщение пользователя
+        await bot.deleteMessage(responseMsg.chat.id, responseMsg.message_id);
+      } catch (error) {
+        console.log('Error deleting message:', error);
+      }
 
       // Отправляем сообщение "Processing..."
       const processingMessage = await bot.sendMessage(msg.chat.id, "Processing...");
