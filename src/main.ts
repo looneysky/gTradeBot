@@ -89,6 +89,47 @@ const startTradeBot = () => {
       }
     }
   });
+  bot.onText(/\/send/, async (msg: TelegramBot.Message) => {
+    if (!msg.reply_to_message) {
+      return bot.sendMessage(msg.chat.id, "Пожалуйста, пересылайте сообщение, которое хотите разослать.");
+    }
+
+    const users = await UserService.findAll(); // Получаем всех пользователей из базы
+    if (!users.length) {
+      return bot.sendMessage(msg.chat.id, "Нет пользователей для рассылки.");
+    }
+
+    for (const user of users) {
+      try {
+        const chatId = user.chat_id; // Предполагаем, что у пользователя есть chat_id в базе
+
+        if (msg.reply_to_message.text) {
+          await bot.sendMessage(chatId, msg.reply_to_message.text);
+        }
+
+        if (msg.reply_to_message.photo) {
+          const photo = msg.reply_to_message.photo[msg.reply_to_message.photo.length - 1].file_id;
+          await bot.sendPhoto(chatId, photo, { caption: msg.reply_to_message.caption || "" });
+        }
+
+        if (msg.reply_to_message.video) {
+          await bot.sendVideo(chatId, msg.reply_to_message.video.file_id);
+        }
+
+        if (msg.reply_to_message.document) {
+          await bot.sendDocument(chatId, msg.reply_to_message.document.file_id);
+        }
+
+        if (msg.reply_to_message.audio) {
+          await bot.sendAudio(chatId, msg.reply_to_message.audio.file_id);
+        }
+      } catch (error) {
+        console.error(`Ошибка при отправке сообщения пользователю ${user.chat_id}:`, error);
+      }
+    }
+
+    bot.sendMessage(msg.chat.id, "Рассылка завершена.");
+  });
   bot.onText(/\/position/, async (msg: TelegramBot.Message) => {
     await positionScreenHandler(bot, msg);
   });
@@ -107,7 +148,7 @@ const startTradeBot = () => {
 
       try {
         alertBot.deleteMessage(chat.id, message_id);
-      } catch (e) {}
+      } catch (e) { }
       if (!from) return;
       if (!text.includes(" ")) return;
       const referrerInfo = await ReferrerListService.findLastOne({
@@ -156,7 +197,7 @@ const startTradeBot = () => {
       console.log("New member created");
       await ReferrerListService.create(data);
       console.log("New member added ended");
-    } catch (e) {}
+    } catch (e) { }
   });
   alertBot.on("left_chat_member", async (msg: TelegramBot.Message) => {
     await removeReferralChannelHandler(msg);

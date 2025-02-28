@@ -16,7 +16,7 @@ export const runSOLPriceUpdateSchedule = () => {
   }
 };
 
-const BIRDEYE_API_KEY = process.env.BIRD_EVEY_API || "";
+const BIRDEYE_API_KEY = process.env.BIRD_EYE_API || "";
 const REQUEST_HEADER = {
   accept: "application/json",
   "x-chain": "solana",
@@ -33,6 +33,8 @@ const updateSolPrice = async () => {
       options
     );
     const res = await response.json();
+    console.log(res)
+    console.log(options)
     const price = res.data.value;
     await redisClient.set(key, price);
   } catch (e) {

@@ -34,7 +34,7 @@ export const transferFundScreenHandler = async (
     if (!user) return;
 
     const temp =
-      `<b>GrowTrade ${GrowTradeVersion}</b>\n💳 <b>Your wallet address</b>\n` +
+      `<b>GmgnTrade ${GrowTradeVersion}</b>\n💳 <b>Your wallet address</b>\n` +
       `<i>${copytoclipboard(user.wallet_address)}</i>\n\n` +
       `<b>Balance: loading...</b>\n`;
 
@@ -71,7 +71,7 @@ export const transferFundScreenHandler = async (
     );
 
     let caption =
-      `<b>GrowTrade ${GrowTradeVersion}</b>\n💳 <b>Your wallet address</b>\n` +
+      `<b>GmgnTrade ${GrowTradeVersion}</b>\n💳 <b>Your wallet address</b>\n` +
       `<i>${copytoclipboard(user.wallet_address)}</i>\n\n` +
       `<b>Balance: ${sol} SOL</b>\n`;
 
