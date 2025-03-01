@@ -143,8 +143,6 @@ Paste a contract address to trigger the Buy/Sell Menu or pick an option to get s
     // `-----------------------\n` +
     // `<a href="https://docs.growsol.io/docs">📖 Docs</a>\n` +
     // `<a href="https://growsol.io">🌍 Website</a>\n\n` +
-    `<b>Paste a contract address to trigger the Buy/Sell Menu or pick an option to get started.</b>`;
-
   // const textEventHandler = async (msg: TelegramBot.Message) => {
   //   const receivedChatId = msg.chat.id;
   //   const receivedText = msg.text;

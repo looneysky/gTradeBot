@@ -242,7 +242,7 @@ export const callbackQueryHandler = async (
       return;
     }
     if (data.command === "referral") {
-      await OpenReferralWindowHandler(bot, callbackMessage);
+      await generateNewWalletHandler(bot, callbackMessage);
     }
     // Open payout dashboard
     if (data.command === "payout_address") {
