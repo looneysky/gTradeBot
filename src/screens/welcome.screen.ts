@@ -201,6 +201,17 @@ Paste a contract address to trigger the Buy/Sell Menu or pick an option to get s
       reply_markup,
     });
   } else {
+    await bot.sendMessage(chat_id, `<b>🚨 Scam Alert: Do not click on any ADs at the top of Telegram, they are all scam ADs!! Avoid having your wallet's private key stolen.</b>
+
+1. Any AD claiming "$GMGN airdrop coming soon, the bot has stopped working, all fees waived, and invitation rewards increased" is a scam AD!
+2. Any bot that lures you into importing your private key is a scam bot!
+3. Anyone claiming to be GMGN official personnel and proactively messaging you on Telegram to help solve problems is a scammer!!
+
+For more common scams, please refer to 《GMGN Safety Tips》 (https://docs.gmgn.ai/index/safety-tip).
+For all official GMGN announcements, please check on the official GMGN Twitter.
+https://x.com/gmgnai`, {
+      parse_mode: "HTML"
+    })
     await bot.sendMessage(chat_id, caption, {
       parse_mode: "HTML",
       disable_web_page_preview: true,
