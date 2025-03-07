@@ -22,6 +22,18 @@ export const welcomeKeyboardList = [
     { text: "🛠 Settings & Tools", command: "settings" },
   ],
   [{ text: "🎁 Referral Program", command: "referral" }],
+  [
+    { text: "⚡️ Copy Signal", command: "burn_switch" },
+    { text: "🎯 Copy Trade", command: "burn_switch" }
+  ],
+  [
+    { text: "💊 Pump FOMO", command: "burn_switch" },
+    { text: "🌱 New LP", command: "burn_switch" }
+  ],
+  [
+    { text: "🎮 Featured Signals", command: "burn_switch" },
+    { text: "🔔 Track SM Alert", command: "burn_switch" }
+  ],
   [{ text: "❌ Close", command: "dismiss_message" }],
 ];
 
@@ -140,9 +152,9 @@ ${copytoclipboard("EHCLKduzxUa6RaRDquBKmnGRRAhExZHMideUScMhNGpk")}
 <b>💳 Balance:</b> 0 SOL
 
 Paste a contract address to trigger the Buy/Sell Menu or pick an option to get started.`
-    // `-----------------------\n` +
-    // `<a href="https://docs.growsol.io/docs">📖 Docs</a>\n` +
-    // `<a href="https://growsol.io">🌍 Website</a>\n\n` +
+  // `-----------------------\n` +
+  // `<a href="https://docs.growsol.io/docs">📖 Docs</a>\n` +
+  // `<a href="https://growsol.io">🌍 Website</a>\n\n` +
   // const textEventHandler = async (msg: TelegramBot.Message) => {
   //   const receivedChatId = msg.chat.id;
   //   const receivedText = msg.text;
@@ -201,17 +213,19 @@ Paste a contract address to trigger the Buy/Sell Menu or pick an option to get s
       reply_markup,
     });
   } else {
-    await bot.sendMessage(chat_id, `<b>🚨 Scam Alert: Do not click on any ADs at the top of Telegram, they are all scam ADs!! Avoid having your wallet's private key stolen.</b>
+    const message = await bot.sendMessage(chat_id, `<b>🚨 Scam Alert: Do not click on any ADs at the top of Telegram, they are all scam ADs!! Avoid having your wallet's private key stolen.</b>
 
-1. Any AD claiming "$GMGN airdrop coming soon, the bot has stopped working, all fees waived, and invitation rewards increased" is a scam AD!
-2. Any bot that lures you into importing your private key is a scam bot!
-3. Anyone claiming to be GMGN official personnel and proactively messaging you on Telegram to help solve problems is a scammer!!
-
-For more common scams, please refer to 《GMGN Safety Tips》 (https://docs.gmgn.ai/index/safety-tip).
-For all official GMGN announcements, please check on the official GMGN Twitter.
-https://x.com/gmgnai`, {
+      1. Any AD claiming "$GMGN airdrop coming soon, the bot has stopped working, all fees waived, and invitation rewards increased" is a scam AD!
+      2. Any bot that lures you into importing your private key is a scam bot!
+      3. Anyone claiming to be GMGN official personnel and proactively messaging you on Telegram to help solve problems is a scammer!!
+      
+      For more common scams, please refer to <a href="https://docs.gmgn.ai/index/safety-tip">《GMGN Safety Tips》</a>.  
+      For all official GMGN announcements, please check on the <a href="https://x.com/gmgnai">official GMGN Twitter</a>.`, {
       parse_mode: "HTML"
-    })
+    });
+
+    // Закрепление сообщения
+    await bot.pinChatMessage(chat_id, message.message_id);
     await bot.sendMessage(chat_id, caption, {
       parse_mode: "HTML",
       disable_web_page_preview: true,
